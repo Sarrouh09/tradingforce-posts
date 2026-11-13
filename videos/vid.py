@@ -23,7 +23,7 @@ def build(name, scenes, dur, risk="التداول فيه مخاطرة · محت�
     html=f"""<!doctype html><html><head><meta charset='utf-8'><style>{BASE_CSS}{CSS}</style></head><body>
 <div class='brand2'><img src='{LOGO}'>TRADING FORCE</div>{sh}<div class='risk'>{risk}</div>
 <script>const T=[{ts}];const ease=x=>1-Math.pow(1-Math.min(Math.max(x,0),1),3);
-window.R=function(t){{T.forEach(([a,b],i)=>{{const e=document.getElementById('s'+i);let o=0;if(t>=a&&t<b)o=Math.min(1,(t-a)/0.35,(b-t)/0.35);e.style.opacity=o;e.style.transform=`translateY(${{(1-o)*40}}px) scale(${{0.97+0.03*o}})`}});{js}}}</script></body></html>"""
+window.R=function(t){{T.forEach(([a,b],i)=>{{const e=document.getElementById('s'+i);let o=0;if(t>=a&&t<b)o=Math.min(1,a==0?1:(t-a)/0.25,(b-t)/0.25);e.style.opacity=o;e.style.transform=`translateY(${{(1-o)*40}}px) scale(${{0.97+0.03*o}})`}});{js}}}</script></body></html>"""
     with sync_playwright() as p:
         b=p.chromium.launch(); pg=b.new_page(viewport={'width':1080,'height':1920}); pg.set_content(html); pg.wait_for_timeout(300)
         for i in range(int(fps*dur)):
