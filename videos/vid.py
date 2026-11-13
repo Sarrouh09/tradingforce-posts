@@ -16,12 +16,12 @@ CSS="""body{width:1080px;height:1920px;font-family:Inter,'DejaVu Sans',sans-seri
 .gold{color:var(--gold)}.risk{position:absolute;bottom:80px;left:0;right:0;text-align:center;font-size:28px;color:var(--muted);direction:rtl}
 .time{font-family:'Inter Display';font-weight:800;font-size:150px;direction:ltr;line-height:1}
 """
-def build(name, scenes, dur, risk="التداول فيه مخاطرة · محتوى تعليمي مش نصيحة مالية", js="", fps=30):
+def build(name, scenes, dur, risk="التداول فيه مخاطرة · محتوى تعليمي مش نصيحة مالية", js="", fps=30, ticks=(), hits=(), mood='minor', overlay=''):
     fr=Path(f'/home/claude/video/f_{name}'); shutil.rmtree(fr,ignore_errors=True); fr.mkdir()
     sh="".join(f"<div class='sc' id='s{i}'>{h}</div>" for i,(_,_,h) in enumerate(scenes))
     ts=",".join(f"[{a},{b}]" for a,b,_ in scenes)
     html=f"""<!doctype html><html><head><meta charset='utf-8'><style>{BASE_CSS}{CSS}</style></head><body>
-<div class='brand2'><img src='{LOGO}'>TRADING FORCE</div>{sh}<div class='risk'>{risk}</div>
+<div class='brand2'><img src='{LOGO}'>TRADING FORCE</div>{sh}{overlay}<div class='risk'>{risk}</div>
 <script>const T=[{ts}];const ease=x=>1-Math.pow(1-Math.min(Math.max(x,0),1),3);
 window.R=function(t){{T.forEach(([a,b],i)=>{{const e=document.getElementById('s'+i);let o=0;if(t>=a&&t<b)o=Math.min(1,a==0?1:(t-a)/0.25,(b-t)/0.25);e.style.opacity=o;e.style.transform=`translateY(${{(1-o)*40}}px) scale(${{0.97+0.03*o}})`}});{js}}}</script></body></html>"""
     with sync_playwright() as p:
@@ -30,5 +30,6 @@ window.R=function(t){{T.forEach(([a,b],i)=>{{const e=document.getElementById('s'
             pg.evaluate(f"R({i/fps})"); pg.screenshot(path=str(fr/f'{i:04d}.jpg'),type='jpeg',quality=90)
         b.close()
     out=f'/home/claude/out/video_{name}.mp4'
-    subprocess.run(['ffmpeg','-y','-loglevel','error','-framerate',str(fps),'-i',str(fr/'%04d.jpg'),'-f','lavfi','-i','anullsrc=r=44100:cl=stereo','-shortest','-c:v','libx264','-preset','veryfast','-crf','20','-pix_fmt','yuv420p','-c:a','aac','-movflags','+faststart',out],check=True)
+    import audio; wav=f'/home/claude/video/{name}.wav'; audio.make(wav,dur,cuts=[a for a,_,_ in scenes if a>0],ticks=ticks,hits=hits,mood=mood)
+    subprocess.run(['ffmpeg','-y','-loglevel','error','-framerate',str(fps),'-i',str(fr/'%04d.jpg'),'-i',wav,'-shortest','-c:v','libx264','-preset','veryfast','-crf','20','-pix_fmt','yuv420p','-c:a','aac','-movflags','+faststart',out],check=True)
     shutil.rmtree(fr); return out
