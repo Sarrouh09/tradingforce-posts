@@ -20,23 +20,23 @@ phone=f"""<div style='width:620px;height:1000px;border-radius:70px;border:10px s
 <div id='btn' style='position:absolute;bottom:120px;left:70px;right:70px;height:130px;border-radius:30px;background:#DC2626;display:flex;align-items:center;justify-content:center;font-family:Inter Display;font-weight:800;font-size:56px'>SELL</div>
 <div id='rip' style='position:absolute;bottom:155px;left:50%;width:60px;height:60px;margin-left:-30px;border-radius:50%;background:#ffffff88;opacity:0'></div></div>"""
 S3=f"<div class='ar' style='font-size:66px;margin-bottom:34px'>وإنت بتوصلك <span class='grad'>خطة واضحة</span> 📲</div>{phone}"
-S4=f"<div class='ar' style='font-size:66px;margin-bottom:34px' id='s4t'>وإنت تقرر… وتدوس 👆</div>{phone.replace('notif','notif2').replace('btn','btn2').replace('rip','rip2')}"
+S4=f"<div class='ar' style='font-size:66px;margin-bottom:34px' id='s4t'>القرار في إيدك 👆</div>{phone.replace('notif','notif2').replace('btn','btn2').replace('rip','rip2')}"
 S5="<div class='ar' style='font-size:82px'>ومش كل صفقة<br>بتكسب 🤝</div><div class='ar2' style='margin-top:36px'>عشان كده وقف الخسارة<br>موجود في كل صفقة،<br>والقرار دايماً <b style='color:var(--gold)'>في إيدك</b></div>"
 S6="<div class='ar' style='font-size:70px'>عايز تعرف<br>بيشتغل إزاي؟ 🤔</div><div class='ar' style='font-size:80px;margin-top:40px;color:var(--gold)'>اكتب «إزاي» 👇</div><div class='ar2' style='margin-top:30px'>في الكومنتات وهنرد عليك</div><div class='ar2' style='margin-top:20px'>وتابعنا 🔔</div>"
-ST=[0, 6.55, 7.86, 15.61, 19.41, 23.21, 31.06, 38.66]
+ST=[0, 8.17, 9.65, 19.76, 25.93, 32.04, 41.93, 49.75]
 sc=[(ST[i],ST[i+1],x) for i,x in enumerate([S0,S1,S2,S3,S4,S5,S6])]
-js="""const ST=[0, 6.55, 7.86, 15.61, 19.41, 23.21, 31.06, 38.66];
+js="""const ST=[0, 8.17, 9.65, 19.76, 25.93, 32.04, 41.93, 49.75];
 if(t<ST[1]){for(let i=0;i<18;i++){const e=document.getElementById('w'+i);const k=Math.min(1,t/(ST[1]-0.4));
 e.style.transform=`translate(${Math.sin(t*(2+i%5)+i)*k*60}px,${Math.cos(t*(3+i%4)+i*2)*k*50}px) rotate(${Math.sin(t*4+i)*k*14}deg)`;
-e.style.opacity=Math.min(1,Math.max(0,(t-i*0.28)/0.3));}
+e.style.opacity=Math.min(1,Math.max(0,(t-i*0.3)/0.3));}
 document.getElementById('stress').style.width=(Math.min(1,t/(ST[1]-0.3))*100)+'%';}
-for(let i=0;i<5;i++){const c=document.getElementById('c'+i);const a=ST[2]+1.6+i*1.05;const p=ease((t-a)/0.35);c.style.opacity=p;c.style.transform=`translateX(${(1-p)*-120}px)`;
+for(let i=0;i<5;i++){const c=document.getElementById('c'+i);const a=ST[2]+2.6+i*1.3;const p=ease((t-a)/0.35);c.style.opacity=p;c.style.transform=`translateX(${(1-p)*-120}px)`;
 document.getElementById('k'+i).style.opacity=t>a+0.35?1:0;}
-{const n=document.getElementById('notif');const p=ease((t-ST[3]-0.3)/0.5);n.style.transform=`translateY(${(1-p)*-500}px)`;}
+{const n=document.getElementById('notif');const p=ease((t-ST[3]-1.2)/0.5);n.style.transform=`translateY(${(1-p)*-500}px)`;}
 {const n=document.getElementById('notif2');n.style.transform='none';const r=document.getElementById('rip2');const b=document.getElementById('btn2');
-const tp=ST[4]+1.9;if(t>tp&&t<tp+0.6){const q=(t-tp)/0.6;r.style.opacity=1-q;r.style.transform=`scale(${1+q*6})`}else r.style.opacity=0;
+const tp=ST[4]+3.6;if(t>tp&&t<tp+0.6){const q=(t-tp)/0.6;r.style.opacity=1-q;r.style.transform=`scale(${1+q*6})`}else r.style.opacity=0;
 if(t>tp+0.15){b.style.background='#059669';b.textContent='✓ تم الدخول'}else{b.style.background='#DC2626';b.textContent='SELL'}}
 """
 build("we_do_the_work_vo",sc,ST[-1],risk="التداول فيه مخاطرة · النتايج مش مضمونة · مش نصيحة مالية",js=js,
- ticks=[ST[2]+1.95+i*1.05 for i in range(5)],hits=(ST[1],ST[3]+0.3,ST[4]+1.9),mood='major')
+ ticks=[ST[2]+2.95+i*1.3 for i in range(5)],hits=(ST[1],ST[3]+1.2,ST[4]+3.6),mood='major')
 print("ok")
